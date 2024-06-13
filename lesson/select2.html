@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Вы разрабатываете веб-приложение для выбора и отображения данных о странах. У вас есть форма, включающая элемент select, в котором пользватель может выбрать определнную страну. При выборе страны, Вам нелбходимо динамически обновлять другой элемент на странице, например, отображать информацию о сталице выбранной страны  -->
+
+    <h1>Выберете страну:</h1>
+    <form id="country-form">
+        <select id="country-select">
+            <option value="">Выберете страну</option>
+            <option value="russia">Россия</option>
+            <option value="usa">США</option>
+            <option value="china">Китай</option>
+        </select>
+    </form>
+
+    <h2>Столица:</h2>
+    <p id="capital-info">Выберете страну, чтобы узнать столицу.</p>
+
+    <script>
+        const selectElement = document.getElementById('country-select');
+        const capitalInfoElement = document.getElementById('capital-info');
+
+        selectElement.onchange = function (){
+            const selectedCountry = selectElement.value;
+            console.log(selectedCountry);
+            let captal = '';
+
+            // Определяем столицу в зависимости от выбранной страны
+            switch (selectedCountry) {
+                case 'russia':
+                    captal = 'Москва';
+                    break;
+                case 'usa':
+                    captal = 'Вашингтон';
+                    break;
+                case 'china':
+                    captal = 'Пекин';
+                    break;
+                default:
+                    captal = 'Выберете страну, чтобы узнать столицу';
+                    break;
+            }
+
+            // Обновляем информацию о столице
+            capitalInfoElement.textContent = captal;
+        }
+    </script>
+</body>
+</html>
