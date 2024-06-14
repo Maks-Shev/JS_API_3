@@ -55,17 +55,16 @@
                 <span class="like-count">0</span>
             </div>    
         </div>
+
 <script>
         const photoContainer = document.querySelector('#photo-container');
         const photographerElement = document.querySelector('.photographer');
         const likeButton = document.getElementById('like-button');
         const likeCountElement = document.querySelector('.like-count');
-        const historyImagesContainer = document.querySelector('.history-images');
 
         const apiKey = 'aycB8GJkriBHTGki0qOOR1_NtMmMvHeT7VNXu8UF4K4'; 
         const likeKey = '';
 
-        let previousPhotos = []; // массив для хранения истории просмотров
 
         // Получаем случайное изображение из Unsplash
         async function fetchRandomPhoto() {
@@ -89,7 +88,7 @@
                 const photoElement = document.createElement('div');
                 photoElement.classList.add('photo');
                 const img = document.createElement('img');
-                img.src = photo.urls.regular;
+                img.src = photo.urls.small;
                 img.alt = photo.alt_description;
                 photoElement.appendChild(img);
                 photoContainer.innerHTML = '';
@@ -108,33 +107,7 @@
                     likeCountElement.textContent = newLikes;
                     saveLikes(photoId, newLikes);
                 });
-
-                // Добавляем фото в историю просмотров
-                addToHistory(photo);
             }
-        }
-
-        // Добавляем фото в историю просмотров
-        function addToHistory(photo) {
-            previousPhotos.unshift(photo);
-            if (previousPhotos.length > 5) {
-                previousPhotos.pop(); // ограничиваем историю последними 5 фото
-            }
-            displayHistory();
-        }
-
-        // Отображаем историю просмотров
-        function displayHistory() {
-            historyImagesContainer.innerHTML = '';
-            previousPhotos.forEach(photo => {
-                const historyImageContainer = document.createElement('div');
-                historyImageContainer.classList.add('history-image');
-                const img = document.createElement('img');
-                img.src = photo.urls.thumb;
-                img.alt = photo.alt_description;
-                historyImageContainer.appendChild(img);
-                historyImagesContainer.appendChild(historyImageContainer);
-            });
         }
 
         // Загрузка количества лайков из localStorage
@@ -156,78 +129,3 @@
 </html>
 
 
-<!-- <script>
-    const photoContainer = document.querySelector('#photo-container');
-    const photographerElement = document.querySelector('.photographer');
-    const likeButton = document.getElementById('like-button');
-    const likeCountElement = document.querySelector('.like-count');
-
-    
-    let page = 1;
-    const apiKey = 'aycB8GJkriBHTGki0qOOR1_NtMmMvHeT7VNXu8UF4K4';
-    const likeKey = '';
-
-    // Получаем случайную фотографию
-    async function fetchPhotos() {
-      try {
-        const response = await fetch(
-          `https://api.unsplash.com/photos?page=${page}&per_page=9&client_id=${apiKey}`);
-        if (!response.ok) {
-            throw new Error(`Ошибка ${response.status}`);
-        }  
-        const photos = await response.json();
-        return photos;
-      } catch (error) {
-        console.log("Ошибка при загрузке фотографий: ", error);
-        return [];
-      }
-    }
-
-    // Отображаем случайную фотографию
-    async function updatePhotos () {
-        photoContainer.innerHTML = '';
-      // создание контента
-      const photos = await fetchPhotos();
-      if (photos.length > 0) {
-          photos.forEach(photo => {
-            const photoElement = document.createElement('div');
-            photoElement.classList.add('photo');
-            const img = document.createElement('img');
-            img.src = photo.urls.small;
-            img.alt = photo.alt_description;
-            photoElement.appendChild(img);
-            photoContainer.appendChild(photoElement);
-
-            photographerElement.textContent = `By ${photo.user.name}`;
-
-            const savedLikes = loadLikes(photo.id);
-            likeCountElement.textContent = savedLikes !== null ? savedLikes : 0;
-            likeButton.dataset.photoId = photo.id;
-
-            likeButton.addEventListener('click', () => {
-                const photoId = likeButton.dataset.photoId;
-                const currentLikes = parseInt(likeCountElement.textContent, 10);
-                const newLikes = currentLikes + 1;
-                likeCountElement.textContent = newLikes;
-                saveLikes(photoId, newLikes);
-            });
-        });
-        
-      }
-    }
-
-    // Обновляем количество лайков
-    function loadLikes(photoId) {
-        const savedLikes = localStorage.getItem(`${likeKey}_${photoId}`);
-        return savedLikes ? parseInt(savedLikes, 10) : 0;
-    }
-
-    // Сохраняем количество лайков в localStorage
-    function saveLikes(photoId, likes) {
-        localStorage.setItem(`${likeKey}_${photoId}`, likes);
-    }
-
-    window.addEventListener('load', () => {
-        updatePhotos();
-    });
-</script> -->
